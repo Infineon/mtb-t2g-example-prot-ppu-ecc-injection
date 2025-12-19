@@ -1,7 +1,15 @@
 <img src="./images/IFX_LOGO_600.gif" align="right" width="150"/>
 
-# PROT PPU ECC Injection
+# PROT PPU ECC Error Injection
 **This code example shows how to perform the error injection onto Error Correcting Code (ECC) of Peripheral Protection Unit (PPU).**  
+
+## Requirements
+
+- [ModusToolbox&trade;](https://www.infineon.com/modustoolbox) v3.0 or later (tested with v3.0)
+
+## Supported toolchains (make variable 'TOOLCHAIN')
+
+- GNU Arm&reg; Embedded Compiler v11.3.1 (`GCC_ARM`) – Default value of `TOOLCHAIN`
 
 ## Device
 The device used in this code example (CE) is:
@@ -9,7 +17,7 @@ The device used in this code example (CE) is:
 
 ## Board
 The board used for testing is:
-- TRAVEO™ T2G evaluation kit ([KIT_T2G-B-H_EVK](https://www.infineon.com/cms/en/product/evaluation-boards/kit_t2g-b-h_evk/), [KIT_T2G-B-H_LITE](https://www.infineon.com/cms/en/product/evaluation-boards/kit_t2g-b-h_lite/))
+- TRAVEO™ T2G evaluation kit ([KIT_T2G-B-H_EVK](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-EVK), [KIT_T2G-B-H_LITE](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-LITE))
 
 ## Scope of work
 The static random-access memory (SRAM) stored protection information of PPU is supported by ECC. This ECC supports single error correction and double error detection (SECDED). In this example, an ECC error is injected into the SRAM that contains PPU configuration.
@@ -38,15 +46,15 @@ natively support this attribute
     - eFuse Read Protection Unit (ERPU)
     - eFuse Write Protection Unit (EWPU)
 
-More details can be found in [Technical Reference Manual (TRM)](https://www.infineon.com/dgdl/?fileId=5546d4627600a6bc017600bfae720007), [Registers TRM](https://www.infineon.com/dgdl/?fileId=5546d4627600a6bc017600be2aef0004) and [Data Sheet](https://www.infineon.com/dgdl/?fileId=5546d46275b79adb0175dc8387f93228).
+More details of TRAVEO™ T2G CYT4BF Series can be found in Technical Reference Manual (TRM), Registers TRM and Data Sheet. (See the [here](https://www.infineon.com/products/microcontroller/32-bit-traveo-t2g-arm-cortex/for-body/t2g-cyt4bf#documents))
 
 ## Hardware setup
 This CE has been developed for:
-- TRAVEO™ T2G evaluation kit ([KIT_T2G-B-H_EVK](https://www.infineon.com/cms/en/product/evaluation-boards/kit_t2g-b-h_evk/))<BR>
+- TRAVEO™ T2G evaluation kit ([KIT_T2G-B-H_EVK](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-EVK))<BR>
 <img src="./images/KIT_T2G-B-H_EVK.gif"/><BR>
 No changes are required from the board's default settings.
 
-- TRAVEO™ T2G Body High Lite evaluation kit ([KIT_T2G-B-H_LITE](https://www.infineon.com/cms/en/product/evaluation-boards/kit_t2g-b-h_lite/))<BR>
+- TRAVEO™ T2G Body High Lite evaluation kit ([KIT_T2G-B-H_LITE](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-LITE))<BR>
 <img src="./images/KIT_T2G-B-H_LITE.gif"/><BR>
 No changes are required from the board's default settings.
 
@@ -62,7 +70,7 @@ Initialization of the GPIO for UART is done in the <a href="https://infineon.git
 **ECC error injection**
 
 - At first, this CE clears the fault status by calling <a href="https://infineon.github.io/mtb-pdl-cat1/pdl_api_reference_manual/html/group__group__sysfault__functions.html#ga0a2a097b9b1d69fb51806964639c7af7"><i>Cy_SysFault_ClearStatus()</i></a>. Then enable capturing PPU ECC faults by calling <a href="https://infineon.github.io/mtb-pdl-cat1/pdl_api_reference_manual/html/group__group__sysfault__functions.html#gafb1516898b15bdc985a7460c7a9f7ca1"><i>Cy_SysFault_SetMaskByIdx()</i></a>.
-- In each test, the parity value is calculated based on the value and address of testing target attribute. The calculation is done by the function *generate_Parity()*. See [TRM](https://www.infineon.com/dgdl/?fileId=5546d4627600a6bc017600bfae720007) for details on how parity is calculated.
+- In each test, the parity value is calculated based on the value and address of testing target attribute. The calculation is done by the function *generate_Parity()*. See [TRM](https://www.infineon.com/products/microcontroller/32-bit-traveo-t2g-arm-cortex/for-body/t2g-cyt4bf#documents) for details on how parity is calculated.
 - The fault status as a parity injection result is confirmed by <a href="https://infineon.github.io/mtb-pdl-cat1/pdl_api_reference_manual/html/group__group__sysfault__functions.html#ga709ec3b6d64ecd3ca0fc712715f66b7e"><i>Cy_SysFault_GetErrorSource()</i></a>.
 
 **LED control**
@@ -75,7 +83,7 @@ The GPIO is controlled when a fault occurs as a *handle_Fault_IRQ* interrupt.
 - The user LED blinks three times with a period of 500 ms, whose level is inverted by <a href="https://infineon.github.io/mtb-hal-cat1/html/group__group__hal__gpio.html#gacf9c6cb7d4f6f25828a62d44648b745d"><i>cyhal_gpio_toggle()</i></a> and the interval is created by <a href="https://infineon.github.io/mtb-hal-cat1/html/group__group__hal__system.html#ga5f450769c1207d98134a9ced39adfdda"><i>cyhal_system_delay_ms()</i></a>.
 
 ## Run and Test
-For this example, a terminal emulator is required to display outputs and receive keys pressed. You can install a terminal emulator if you do not have one. In this example, [Tera Term](https://ttssh2.osdn.jp/index.html.en) was used as the terminal emulator.
+For this example, a terminal emulator is required to display outputs and receive keys pressed. You can install a terminal emulator if you do not have one. In this example, [Tera Term](https://teratermproject.github.io/index-en.html) was used as the terminal emulator.
 
 After code compilation, perform the following steps to flash the device:
 1. Connect the board to your PC using the provided USB cable through the KitProg3 USB connector.
@@ -85,14 +93,14 @@ After code compilation, perform the following steps to flash the device:
     - In the **Quick Panel**, scroll down, and click **[Project Name] Program (KitProg3_MiniProg4)**.
 4. After programming, the code example starts automatically. Confirm that the messages are displayed on the UART terminal.
     - *Terminal output on program startup*<BR><img src="./images/terminal.png" width="640" /><BR>
-5. You can debug the example to step through the code. In the IDE, use the **[Project Name] Debug (KitProg3_MiniProg4)** configuration in the **Quick Panel**. For details, see the "Program and debug" section in the [Eclipse IDE for ModusToolbox™ software user guide](https://www.infineon.com/dgdl/?fileId=8ac78c8c8386267f0183a8d7043b58ee).
+5. You can debug the example to step through the code. In the IDE, use the **[Project Name] Debug (KitProg3_MiniProg4)** configuration in the **Quick Panel**. For details, see the "Program and debug" section in the [Eclipse IDE for ModusToolbox™ software user guide](https://www.infineon.com/MTBEclipseIDEUserguide).
 
 **Note:** **(Only while debugging)** On the CM7 CPU, some code in *main()* may execute before the debugger halts at the beginning of *main()*. This means that some code executes twice: once before the debugger stops execution, and again after the debugger resets the program counter to the beginning of *main()*. See [KBA231071](https://community.infineon.com/t5/Knowledge-Base-Articles/PSoC-6-MCU-Code-in-main-executes-before-the-debugger-halts-at-the-first-line-of/ta-p/253856) to learn about this and for the workaround.
 
 ## References  
 Relevant Application notes are:
-- AN235305 - GETTING STARTED WITH TRAVEO™ T2G FAMILY MCUS IN MODUSTOOLBOX™
-- [AN219843](https://www.infineon.com/dgdl/?fileId=8ac78c8c7cdc391c017d0d3abf4b6772) - Protection configuration in TRAVEO™ T2G MCU
+- [AN235305](https://www.infineon.com/assets/row/public/documents/10/42/infineon-an235305-getting-started-with-traveo-t2g-family-mcus-in-modustoolbox-applicationnotes-en.pdf?fileId=8ac78c8c8b6555fe018c1fddd8a72801) - GETTING STARTED WITH TRAVEO™ T2G FAMILY MCUS IN MODUSTOOLBOX™
+- [AN219843](https://www.infineon.com/gated/infineon-an219843---protection-configuration-in-traveo-tm-t2g-applicationnotes-en_32a66c38-76fc-478e-ba27-0fccba2b2976) - Protection configuration in TRAVEO™ T2G MCU
 
 ModusToolbox™ is available online:
 - <https://www.infineon.com/modustoolbox>
@@ -101,10 +109,11 @@ Associated TRAVEO™ T2G MCUs can be found on:
 - <https://www.infineon.com/cms/en/product/microcontroller/32-bit-traveo-t2g-arm-cortex-microcontroller/>
 
 More code examples can be found on the GIT repository:
-- [TRAVEO™ T2G Code examples](https://github.com/orgs/Infineon/repositories?q=mtb-t2g-&type=all&language=&sort=)
+- [TRAVEO™ T2G Code examples](https://github.com/orgs/Infineon/repositories?q=topic%3Akit-t2g-b-h-lite&type=all&language=&sort=) for [KIT_T2G-B-H_LITE](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-LITE)
+- [TRAVEO™ T2G Code examples](https://github.com/orgs/Infineon/repositories?q=topic%3Akit-t2g-b-h-evk&type=all&language=&sort=) for [KIT_T2G-B-H_EVK](https://www.infineon.com/evaluation-board/KIT-T2G-B-H-EVK)
 
 For additional trainings, visit our webpage:  
-- [TRAVEO™ T2G trainings](https://www.infineon.com/cms/en/product/microcontroller/32-bit-traveo-t2g-arm-cortex-microcontroller/32-bit-traveo-t2g-arm-cortex-for-body/traveo-t2g-cyt4bf-series/#!trainings)
+- [TRAVEO™ T2G trainings](https://www.infineon.com/training/microcontroller-trainings)
 
 For questions and support, use the TRAVEO™ T2G Forum:  
 - <https://community.infineon.com/t5/TRAVEO-T2G/bd-p/TraveoII>  
